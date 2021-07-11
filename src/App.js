@@ -1,24 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from './component/Header';
+import Block from './component/Block';
+import Blockchain from './component/Blockchain';
+import Hash from './component/Hash';
+import Coinbase from './component/Coinbase';
 
+import{ BrowserRouter as Router, Route , Switch} from "react-router-dom"
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header/>
+        <Switch>
+          <Route path="/hash">
+            <Hash />
+          </Route>
+          <Route path="/block">
+            <Block />
+          </Route>
+          <Route path="/blockchain">
+            <Blockchain />
+          </Route>
+          <Route path="/coinbase">
+            <Coinbase />
+          </Route>
+        </Switch>
+    </Router>
   );
 }
 
