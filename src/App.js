@@ -5,7 +5,8 @@ import Block from './component/Block';
 import Blockchain from './component/Blockchain';
 import Hash from './component/Hash';
 import Coinbase from './component/Coinbase';
-
+import Keys from './component/Keys';
+import Signatures from './component/Signatures';
 import{ BrowserRouter as Router, Route , Switch} from "react-router-dom"
 function App() {
   return (
@@ -24,6 +25,13 @@ function App() {
           <Route path="/coinbase">
             <Coinbase />
           </Route>
+          <Route path="/keys">
+            <Keys />
+          </Route>
+          <Route path="/signatures">
+            <Signatures/>
+          </Route>
+
         </Switch>
     </Router>
   );

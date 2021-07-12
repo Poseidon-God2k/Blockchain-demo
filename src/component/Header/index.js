@@ -21,7 +21,13 @@ const Header= () =>{
                             <Link to="/blockchain" className="nav-link">Blockchain</Link>
                         </li>
                         <li className="nav-item">
-                                <Link to="/coinbase" className="nav-link">Coinbase</Link>
+                            <Link to="/coinbase" className="nav-link">Coinbase</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/keys" className="nav-link">Keys</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/signatures" className="nav-link">Signatures</Link>
                         </li>
                     </ul>
                 </div>
