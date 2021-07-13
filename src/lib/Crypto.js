@@ -28,9 +28,14 @@ const Crypto = {
         return Buffer.from(keypair.sign(binMsg).toDER()).toString('hex');
     },
     verifyMsg: function(msg, pubK, sign){
-        let keypair = ec.keyFromPublic(pubK, 'hex');
-        let binMsg = Buffer.from(crypto.createHash('SHA256').update(msg).digest('hex'));;
-        return keypair.verify(binMsg,sign);
+        try{
+            let keypair = ec.keyFromPublic(pubK, 'hex');
+            let binMsg = Buffer.from(crypto.createHash('SHA256').update(msg).digest('hex'));
+            return keypair.verify(binMsg,sign)
+        }
+        catch{
+            return false;
+        }
     }
 }
 

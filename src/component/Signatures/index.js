@@ -13,9 +13,12 @@ function createCookie(str){
     document.cookie = "msg="+str+"; max-age=86400; path=/;";
 }
 
-const style = {
-    success:{ backgroundColor: "#28a745"},
-    failed:{backgroundColor: "#dc3545"}
+const style =(verify) => {
+    if(verify === 'none') return;
+    if(verify){
+        return { backgroundColor: "#28a745"}
+    }
+    return {backgroundColor: "#dc3545"}
 }
 
 function Signatures(){
@@ -23,9 +26,9 @@ function Signatures(){
     const cookies = getCookie();
     const [privateKey] = useState(cookies["privateKey"]);
     const [msg, setMsg] = useState(cookies["msg"]?cookies["msg"]:"")
-    const [publicKey] = useState(cookies["publicKey"]);
+    const [publicKey, setPublicKey] = useState(cookies["publicKey"]);
     const [signature, setSignature] = useState();
-    const [verify, setVerify] = useState(false);
+    const [verify, setVerify] = useState('none');
     return (
         <>
         <div className="content">
@@ -38,6 +41,7 @@ function Signatures(){
             <input class="btn-change-form" type="button" value="Verify"   onClick={
                 (e)=>{
                     e.preventDefault();
+                    setVerify('none')
                     setActive(true);
                 }
             }
@@ -79,7 +83,7 @@ function Signatures(){
 
             </form>
 
-            <form className={"content-block"+ (!active?" d-none":"")} id="verify" style={verify?style.success: style.failed}>
+            <form className={"content-block"+ (!active?" d-none":"")} id="verify" style={style(verify)} >
                 <div className="form-group row">
                     <label htmlFor="data-row" className="col-sm-2 col-form-label"><b>Message:</b></label>
                     <div className="col-sm-10">
@@ -92,7 +96,9 @@ function Signatures(){
                 <div className="form-group row">
                     <label htmlFor="colFormLabel" className="col-sm-2 col-form-label"><b>publicKey:</b></label>
                     <div className="col-sm-10">
-                    <input type="text" className="form-control" id="privateKey" value={publicKey} disabled/>
+                    <input type="text" className="form-control" id="privateKey" value={publicKey} onChange={
+                        (e) => setPublicKey(e.target.value)
+                    }/>
                     </div>
                 </div>
 
@@ -100,7 +106,9 @@ function Signatures(){
                 <div className="form-group row">
                     <label htmlFor="colFormLabel" className="col-sm-2 col-form-label"><b>Signature:</b></label>
                     <div className="col-sm-10">
-                    <input type="text" className="form-control" id="privateKey-verify" value={signature} disabled/>
+                    <input type="text" className="form-control" id="privateKey-verify" value={signature} onChange={
+                        (e) => setSignature(e.target.value)
+                    }/>
                     </div>
                 </div>
 
@@ -108,7 +116,14 @@ function Signatures(){
                     <div className="col-sm-2"><i className="icon-spinner icon-spin icon-large"></i></div>
                     <div className="col-sm-10">
                     <input className="btn btn-primary" type="button" value="verify" onClick={(e)=>{
-                        setVerify(Crypto.verifyMsg(msg, publicKey, signature))
+                        const regexNotHexForm = new RegExp('[^0-9a-fA-F]+');
+                        if(regexNotHexForm.test(publicKey) || regexNotHexForm.test(signature)  ){
+                            setVerify(false);
+                        }
+                        else{
+                            setVerify(Crypto.verifyMsg(msg, publicKey, signature))
+                        }
+                        
                     }}/>
                     </div>
                 </div>
